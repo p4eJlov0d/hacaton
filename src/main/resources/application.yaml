@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: hacaton
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    password: ${POSTGRES_PASSWORD}
+    username: ${POSTGRES_USER}
+    driver-class-name: org.postgresql.Driver
+server:
+  servlet:
+    context-path: ${CONTEXT_PATH}
+springdoc:
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED}
+  api-docs:
+    enabled: ${SWAGGER_ENABLED}
