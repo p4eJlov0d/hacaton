@@ -1,16 +1,19 @@
 package ru.p4ejlov0d.hacaton.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 import ru.p4ejlov0d.hacaton.dto.request.AuthRequest;
 import ru.p4ejlov0d.hacaton.entity.ClientType;
 import ru.p4ejlov0d.hacaton.entity.PhysicalPerson;
 import ru.p4ejlov0d.hacaton.exception.BadCredentialsException;
+import ru.p4ejlov0d.hacaton.exception.UnauthorizedException;
 import ru.p4ejlov0d.hacaton.model.SessionUser;
 import ru.p4ejlov0d.hacaton.repository.PhysicalPersonRepository;
 import ru.p4ejlov0d.hacaton.service.AuthService;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @SessionScope
@@ -38,6 +41,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public SessionUser getAuthenticatedUser() {
+        if (sessionUser == null) {
+            String message = "session user is null: user unauthorized";
+            log.info(message);
+            throw new UnauthorizedException(message);
+        }
+
         return sessionUser;
     }
 }

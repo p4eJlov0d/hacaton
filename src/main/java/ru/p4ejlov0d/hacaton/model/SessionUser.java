@@ -12,4 +12,6 @@ public class SessionUser {
     private String name;
 
     private List<Company> companies;
+
+    private Company currentCompany;
 }

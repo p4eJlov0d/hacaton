@@ -16,11 +16,15 @@ import ru.p4ejlov0d.hacaton.service.AuthService;
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationController {
+
     private final AuthService authService;
 
     @PostMapping("/login")
     public AuthSuccessResponse login(@RequestBody AuthRequest authRequest) {
         SessionUser user = authService.login(authRequest);
-        return new AuthSuccessResponse(user.getName(), user.getCompanies().stream().map(Company::getSyntheticU).toList());
+        return new AuthSuccessResponse(user.getName(), user.getCompanies().stream()
+                .map(Company::getSyntheticU)
+                .toList()
+        );
     }
 }

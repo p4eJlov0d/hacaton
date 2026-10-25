@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 postgres_data/
+.env.api_keys
 !.gitignore
 
 ### STS ###
