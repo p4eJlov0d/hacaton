@@ -12,6 +12,6 @@ public record PersonalizedNewsData(UUID id,
                                    String summary,
                                    String source,
                                    boolean read,
-                                   Date timestamp
+                                   Date publishedAt
 ) {
 }

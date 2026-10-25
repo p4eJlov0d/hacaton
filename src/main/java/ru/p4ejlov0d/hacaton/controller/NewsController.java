@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import ru.p4ejlov0d.hacaton.dto.response.OpenNewsResponse;
 import ru.p4ejlov0d.hacaton.dto.response.PersonalizedNewsData;
 import ru.p4ejlov0d.hacaton.service.NewsService;
 
@@ -23,7 +24,7 @@ public class NewsController {
     }
 
     @GetMapping("/news/{id}")
-    public ResponseEntity<?> getUniqueNews(@PathVariable UUID id) {
-        return ResponseEntity.ok("new news with id " + id);
+    public ResponseEntity<OpenNewsResponse> getUniqueNews(@PathVariable UUID id) {
+        return ResponseEntity.ok(newsService.getUniqueNewsById(id));
     }
 }

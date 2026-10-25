@@ -6,15 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.p4ejlov0d.hacaton.exception.BadCredentialsException;
-import ru.p4ejlov0d.hacaton.exception.CompanyNotSelectedException;
-import ru.p4ejlov0d.hacaton.exception.UnauthorizedException;
-import ru.p4ejlov0d.hacaton.exception.UnknownCompanyException;
+import ru.p4ejlov0d.hacaton.exception.*;
 
 @RestControllerAdvice
 @Slf4j
 public class ExceptionController {
-    @ExceptionHandler({BadCredentialsException.class, UnknownCompanyException.class, CompanyNotSelectedException.class})
+    @ExceptionHandler({BadCredentialsException.class, UnknownCompanyException.class, CompanyNotSelectedException.class, NewsNotFoundException.class})
     public ResponseEntity<String> badRequest(Exception e) {
         return ResponseEntity.badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
