@@ -17,3 +17,9 @@ springdoc:
     enabled: ${SWAGGER_ENABLED}
   api-docs:
     enabled: ${SWAGGER_ENABLED}
+app:
+  gnews:
+    gnews-api-key: ${GNEWS_API}
+    gnews-api-url: ${GNEWS_URL}
+    gnews-uri-variables: ${GNEWS_URI_VARIABLES}
+    gnews-poll-interval-ms: ${GNEWS_POLL}
