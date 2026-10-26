@@ -5,7 +5,7 @@ import ru.p4ejlov0d.hacaton.model.SenderType;
 import java.util.Date;
 import java.util.UUID;
 
-public record ChatHistoryResponse(UUID messageId,
+public record ChatMessageResponse(UUID messageId,
                                   String messageContent,
                                   SenderType sender,
                                   Date createdAt
