@@ -12,6 +12,7 @@ import ru.p4ejlov0d.hacaton.exception.NewsNotFoundException;
 import ru.p4ejlov0d.hacaton.model.Priority;
 import ru.p4ejlov0d.hacaton.model.SessionUser;
 import ru.p4ejlov0d.hacaton.repository.NewsRepository;
+import ru.p4ejlov0d.hacaton.service.AiService;
 import ru.p4ejlov0d.hacaton.service.AuthService;
 import ru.p4ejlov0d.hacaton.service.NewsService;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 public class NewsServiceImpl implements NewsService {
     private final AuthService authService;
     private final NewsRepository newsRepository;
+    private final AiService aiService;
 
     @Override
     public List<PersonalizedNewsData> getPrioritizedNews() {
@@ -43,13 +45,17 @@ public class NewsServiceImpl implements NewsService {
 
         // TODO должны подгружаться все размышления нейронки, ранжирование по приоритету, подгрузка фулл описания новости
 
+        String aiAnswer = aiService.ask("Как повлияет эта новость на мой бизнес?\n" + news.getTitle() + "\n" + news.getSummary() + "\n" + "Источник: " + news.getSource()).getContent();
+
+        AiNotes aiNotes = new AiNotes("alpha", "news", aiAnswer);
+
         return new OpenNewsResponse(news.getNewsId(),
                 Priority.HIGH,
                 news.getTitle(),
                 news.getPublishedAt(),
                 news.getImageUrl(),
                 news.getSummary(),
-                new AiNotes("alpha", "news", "ai"),
+                aiNotes,
                 new String[]{news.getSource(), "alpha analitics.ru"},
                 new AiGenerationSteps("001", List.of(new AiGenerationSteps.Step(1, "Чтение новости", true, "Прочтение новости", List.of(news.getSource()))))
         );

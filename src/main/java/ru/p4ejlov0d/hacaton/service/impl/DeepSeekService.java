@@ -40,7 +40,7 @@ public class DeepSeekService implements AiService {
         userMessage.setContent(prompt);
         userMessage.setCreatedAt(new Date());
         userMessage.setSender(SenderType.USER);
-        userMessage.setSequenceNumber(conversation.size() / 2 + 1);
+        userMessage.setSequenceNumber(conversation.size() + 1);
 
         promptMessages.add(new SystemMessage("""
                 Ты - ИИ-ассистент для руководителей крупного бизнеса, который исходя из контекста компании, прошлых сообщений
@@ -74,7 +74,7 @@ public class DeepSeekService implements AiService {
         Message aiMessage = new Message();
 
         aiMessage.setSender(SenderType.AI);
-        aiMessage.setSequenceNumber(conversation.size() / 2 + 2);
+        aiMessage.setSequenceNumber(conversation.size() + 2);
         aiMessage.setCreatedAt(new Date());
         aiMessage.setContent(callResponse.content());
         aiMessage.setCompany(company);
