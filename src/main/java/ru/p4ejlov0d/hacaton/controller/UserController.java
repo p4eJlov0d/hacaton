@@ -17,6 +17,6 @@ public class UserController {
     @PostMapping("/company/select")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void selectCompany(@RequestBody SelectCompanyRequest request) {
-        userService.selectCompany(request);
+        userService.selectCompany(request.companyName());
     }
 }

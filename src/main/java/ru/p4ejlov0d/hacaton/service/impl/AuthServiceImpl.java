@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
-import ru.p4ejlov0d.hacaton.dto.request.AuthRequest;
 import ru.p4ejlov0d.hacaton.entity.ClientType;
+import ru.p4ejlov0d.hacaton.entity.Company;
 import ru.p4ejlov0d.hacaton.entity.PhysicalPerson;
 import ru.p4ejlov0d.hacaton.exception.BadCredentialsException;
+import ru.p4ejlov0d.hacaton.exception.CompanyNotSelectedException;
 import ru.p4ejlov0d.hacaton.exception.UnauthorizedException;
 import ru.p4ejlov0d.hacaton.model.SessionUser;
 import ru.p4ejlov0d.hacaton.repository.PhysicalPersonRepository;
@@ -22,11 +23,11 @@ public class AuthServiceImpl implements AuthService {
     private final PhysicalPersonRepository physicalPersonRepository;
 
     @Override
-    public SessionUser login(AuthRequest request) {
+    public SessionUser login(String name) {
         if (sessionUser != null) return sessionUser;
 
-        PhysicalPerson person = physicalPersonRepository.findById(request.name()).orElseThrow(
-                () -> new BadCredentialsException("Invalid username, given: " + request.name())
+        PhysicalPerson person = physicalPersonRepository.findById(name).orElseThrow(
+                () -> new BadCredentialsException("Invalid username, given: " + name)
         );
 
         sessionUser = new SessionUser();
@@ -48,5 +49,15 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return sessionUser;
+    }
+
+    @Override
+    public Company getCurrentCompany() {
+        SessionUser user = getAuthenticatedUser();
+        Company company = user.getCurrentCompany();
+
+        if (company == null) throw new CompanyNotSelectedException();
+
+        return company;
     }
 }

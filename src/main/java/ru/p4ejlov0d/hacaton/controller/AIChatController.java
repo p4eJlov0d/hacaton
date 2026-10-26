@@ -1,30 +1,39 @@
 package ru.p4ejlov0d.hacaton.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.metadata.RateLimit;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.p4ejlov0d.hacaton.dto.AiGenerationSteps;
-import ru.p4ejlov0d.hacaton.dto.AiNotes;
-import ru.p4ejlov0d.hacaton.dto.request.AskAIRequest;
 import ru.p4ejlov0d.hacaton.dto.response.ChatHistoryResponse;
-import ru.p4ejlov0d.hacaton.model.*;
+import ru.p4ejlov0d.hacaton.service.MessageService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/chat")
-@Slf4j
 @RequiredArgsConstructor
 public class AIChatController {
-    /*@GetMapping("/history")
-    public ResponseEntity<List<ChatHistoryResponse>> getChatHistory() {
-        return ResponseEntity.ok(List.of(new ChatHistoryResponse("че там по ключевой ставке?", SenderType.USER, null), new ChatHistoryResponse("message", SenderType.AI, new AIAnswer(new AiNotes("рост инфляции", "повышение процента ключевой ставки", "все плохо"), new Source("001", "https://scam-news.com"), new AiGenerationSteps("001", List.of(new AiGenerationSteps.Step("1", "чтение аналитики альфа банка", true, "ну прочитал я аналитику", List.of("https://alphaanalytics.com"))))))));
-    }*/
+    private final ChatClient chatClient;
+    private final MessageService messageService;
 
-    /*@PostMapping("/ask")
-    public ResponseEntity<AIAnswer> askAI(@RequestBody AskAIRequest ask) {
-        log.info("ask AI {}", ask);
-        return ResponseEntity.ok(new AIAnswer(new AiNotes("рост инфляции", "повышение процента ключевой ставки", "все плохо"), new Source("001", "https://scam-news.com"), new AiGenerationSteps("001", List.of(new AiGenerationSteps.Step("1", "чтение аналитики альфа банка", true, "ну прочитал я аналитику", List.of("https://alphaanalytics.com"))))));
-    }*/
+    @GetMapping("/history")
+    public ResponseEntity<List<ChatHistoryResponse>> getChatHistory() {
+        return ResponseEntity.ok(messageService.getMessages().stream()
+                .map(message -> new ChatHistoryResponse(message.getMessageId(), message.getContent(), message.getSender(), message.getCreatedAt()))
+                .toList()
+        );
+    }
+
+    @PostMapping("/ask")
+    public ResponseEntity<?> askAI(@RequestParam String ask) {
+        var prompt = chatClient.prompt();
+        var call = prompt.user(ask).call();
+        System.out.println(call.chatResponse().getMetadata());
+        RateLimit rateLimit = call.chatResponse().getMetadata().getRateLimit();
+        System.out.println(rateLimit);
+        System.out.println(call.chatResponse());
+        System.out.println(call);
+        return ResponseEntity.ok(call.content());
+    }
 }

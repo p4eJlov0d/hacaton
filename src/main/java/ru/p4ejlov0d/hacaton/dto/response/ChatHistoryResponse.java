@@ -2,5 +2,12 @@ package ru.p4ejlov0d.hacaton.dto.response;
 
 import ru.p4ejlov0d.hacaton.model.SenderType;
 
-public record ChatHistoryResponse(String messageContent, SenderType sender /*AIAnswer aiAnswer*/) {
+import java.util.Date;
+import java.util.UUID;
+
+public record ChatHistoryResponse(UUID messageId,
+                                  String messageContent,
+                                  SenderType sender,
+                                  Date createdAt
+) {
 }

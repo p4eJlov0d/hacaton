@@ -20,7 +20,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public AuthSuccessResponse login(@RequestBody AuthRequest authRequest) {
-        SessionUser user = authService.login(authRequest);
+        SessionUser user = authService.login(authRequest.name());
         return new AuthSuccessResponse(user.getName(), user.getCompanies().stream()
                 .map(Company::getSyntheticU)
                 .toList()

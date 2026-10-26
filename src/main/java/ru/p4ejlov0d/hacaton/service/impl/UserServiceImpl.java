@@ -2,7 +2,6 @@ package ru.p4ejlov0d.hacaton.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.p4ejlov0d.hacaton.dto.request.SelectCompanyRequest;
 import ru.p4ejlov0d.hacaton.entity.Company;
 import ru.p4ejlov0d.hacaton.exception.UnknownCompanyException;
 import ru.p4ejlov0d.hacaton.model.SessionUser;
@@ -17,15 +16,14 @@ public class UserServiceImpl implements UserService {
     private final AuthService authService;
 
     @Override
-    public void selectCompany(SelectCompanyRequest request) {
+    public void selectCompany(String companyName) {
         SessionUser user = authService.getAuthenticatedUser();
         List<Company> companies = user.getCompanies();
-        String companyId = request.companyName();
 
-        if (companies.stream().anyMatch(company -> company.getSyntheticU().equals(companyId))) {
+        if (companies.stream().anyMatch(company -> company.getSyntheticU().equals(companyName))) {
             companies.forEach(company -> {
-                if (company.getSyntheticU().equals(companyId)) user.setCurrentCompany(company);
+                if (company.getSyntheticU().equals(companyName)) user.setCurrentCompany(company);
             });
-        } else throw new UnknownCompanyException(companyId);
+        } else throw new UnknownCompanyException(companyName);
     }
 }

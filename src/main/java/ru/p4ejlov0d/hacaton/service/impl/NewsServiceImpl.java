@@ -8,7 +8,6 @@ import ru.p4ejlov0d.hacaton.dto.response.OpenNewsResponse;
 import ru.p4ejlov0d.hacaton.dto.response.PersonalizedNewsData;
 import ru.p4ejlov0d.hacaton.entity.Company;
 import ru.p4ejlov0d.hacaton.entity.News;
-import ru.p4ejlov0d.hacaton.exception.CompanyNotSelectedException;
 import ru.p4ejlov0d.hacaton.exception.NewsNotFoundException;
 import ru.p4ejlov0d.hacaton.model.Priority;
 import ru.p4ejlov0d.hacaton.model.SessionUser;
@@ -28,9 +27,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<PersonalizedNewsData> getPrioritizedNews() {
         SessionUser user = authService.getAuthenticatedUser();
-        Company currentCompany = user.getCurrentCompany();
-
-        if (currentCompany == null) throw new CompanyNotSelectedException();
+        Company currentCompany = authService.getCurrentCompany();
 
         // TODO персонализация по виду деятельности компании, ранжирование по приоритету
         List<News> news = newsRepository.findAll();
