@@ -9,6 +9,12 @@ spring:
     password: ${POSTGRES_PASSWORD}
     username: ${POSTGRES_USER}
     driver-class-name: org.postgresql.Driver
+  ai:
+    deepseek:
+      api-key: ${AI_API}
+      base-url: ${AI_API_URL}
+      chat:
+        model: ${AI_MODEL}
 server:
   servlet:
     context-path: ${CONTEXT_PATH}

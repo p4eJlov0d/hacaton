@@ -24,6 +24,7 @@ dependencies {
     // Spring Dependencies
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.ai:spring-ai-starter-model-deepseek'
 
     // Lombok
     compileOnly "org.projectlombok:lombok"
@@ -51,4 +52,9 @@ tasks.named('test') {
 
 dependencyLocking {
     lockAllConfigurations()
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.ai:spring-ai-bom:${project.spring_ai}"
+    }
 }
